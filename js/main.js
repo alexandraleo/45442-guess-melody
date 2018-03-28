@@ -1,15 +1,7 @@
-// `use strict`;
-
 let screens = document.getElementById(`templates`).content.children;
 const mainSectionNode = document.querySelector(`section.main`);
 
-// Раз вариант
-let screensNodes = [];
-for (let i = 0; i < screens.length; i++) {
-  screensNodes.push(screens[i]);
-}
-// Два вариант
-// screens = Array.prototype.slice.call(screens);
+let screensNodes = Array.from(screens);
 
 const showScreen = (screenNumber) => {
   mainSectionNode.appendChild(screensNodes[screenNumber]);
@@ -18,35 +10,26 @@ const hideScreen = (screenNumber) => {
   mainSectionNode.removeChild(screensNodes[screenNumber]);
 };
 
-showScreen(0);
+let index = 0;
+showScreen(index);
 
-let currentScreen = mainSectionNode.firstChild.className;
-let index = screensNodes.findIndex((screen) => screen.className === currentScreen);
-
-const onAltPlusArrow = (evt) => {
-  switch (evt.key) {
-    case evt.altKey && `ArrowRight`:
-      if (index <= screensNodes.length - 2) {
-        hideScreen(index);
-        showScreen(index + 1);
-        index++;
-      } else {
-        index = screensNodes.length - 1;
-      }
-      break;
-    case evt.altKey && `ArrowLeft`:
-      if (index > 0) {
-        hideScreen(index);
-        showScreen(index - 1);
-        index--;
-      } else {
-        index = 0;
-      }
-      break;
-    default:
-      return;
+document.addEventListener(`keydown`, function (evt) {
+  if (evt.altKey && evt.key === `ArrowRight`) {
+    if (index < screensNodes.length - 1) {
+      hideScreen(index);
+      showScreen(index + 1);
+      index++;
+    } else {
+      index = screensNodes.length - 1;
+    }
   }
-  evt.preventDefault();
-};
-
-document.addEventListener(`keydown`, onAltPlusArrow);
+  if (evt.altKey && evt.key === `ArrowLeft`) {
+    if (index > 0) {
+      hideScreen(index);
+      showScreen(index - 1);
+      index--;
+    } else {
+      index = 0;
+    }
+  }
+});
