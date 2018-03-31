@@ -33,7 +33,7 @@ document.addEventListener(`keydown`, (evt) => {
     }
   }
 
-  //Подождать озарения
+  // Подождать озарения
   // const getNextScreenNumber = (count, current) => {
   //   const next = current % count;
   //   return next + (next < 0 ? count : 0);
