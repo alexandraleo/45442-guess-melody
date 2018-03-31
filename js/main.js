@@ -13,7 +13,7 @@ const hideScreen = (screenNumber) => {
 let index = 0;
 showScreen(index);
 
-document.addEventListener(`keydown`, function (evt) {
+document.addEventListener(`keydown`, (evt) => {
   if (evt.altKey && evt.key === `ArrowRight`) {
     if (index < screensNodes.length - 1) {
       hideScreen(index);
@@ -32,4 +32,10 @@ document.addEventListener(`keydown`, function (evt) {
       index = 0;
     }
   }
+
+  //Подождать озарения
+  // const getNextScreenNumber = (count, current) => {
+  //   const next = current % count;
+  //   return next + (next < 0 ? count : 0);
+  // };
 });
