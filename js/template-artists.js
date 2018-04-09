@@ -1,7 +1,8 @@
 import {getElement, showScreen} from './show-screen.js';
 import {moduleGenre} from './template-genre.js';
 
-export const moduleArtists = getElement(`<section class="main main--level main--level-artist">
+export const moduleArtists = function () {
+  const templateArtists = getElement(`<section class="main main--level main--level-artist">
     <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
       <circle
         cx="390" cy="390" r="370"
@@ -61,8 +62,10 @@ export const moduleArtists = getElement(`<section class="main main--level main--
     </div>
   </section>`);
 
-const answersNodes = moduleArtists.querySelectorAll(`.main-wrap`);
+  const answersNodes = templateArtists.querySelectorAll(`.main-wrap`);
 
-for (const answer of answersNodes) {
-  answer.addEventListener(`click`, () => showScreen(moduleGenre));
-}
+  for (const answer of answersNodes) {
+    answer.addEventListener(`click`, () => showScreen(moduleGenre()));
+  }
+  return templateArtists;
+};

@@ -1,7 +1,8 @@
 import {getElement, showScreen} from './show-screen.js';
 import {moduleResultVictory, moduleResultTime, moduleResultAttempts} from './template-result.js';
 
-export const moduleGenre = getElement(`<section class="main main--level main--level-genre">
+export const moduleGenre = function () {
+  const templateGenre = getElement(`<section class="main main--level main--level-genre">
     <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
       <circle
         cx="390" cy="390" r="370"
@@ -84,20 +85,24 @@ export const moduleGenre = getElement(`<section class="main main--level main--le
     </div>
   </section>`);
 
-const answerButton = moduleGenre.querySelector(`.genre-answer-send`);
-const formNode = moduleGenre.querySelector(`.genre`);
+  const answerButton = templateGenre.querySelector(`.genre-answer-send`);
+  const formNode = templateGenre.querySelector(`.genre`);
 
-formNode.addEventListener(`change`, () => {
-  const formInputsChecked = formNode.querySelectorAll(`input[type=checkbox]:checked`);
-  if (formInputsChecked.length > 0) {
-    answerButton.disabled = false;
-  } else {
-    answerButton.disabled = true;
-  }
-});
+  formNode.addEventListener(`change`, () => {
+    const formInputsChecked = formNode.querySelectorAll(`input[type=checkbox]:checked`);
+    if (formInputsChecked.length > 0) {
+      answerButton.disabled = false;
+    } else {
+      answerButton.disabled = true;
+    }
+  });
 
-answerButton.addEventListener(`click`, () => {
-  const results = [moduleResultVictory, moduleResultTime, moduleResultAttempts];
-  let resultVariant = Math.floor(Math.random() * results.length);
-  showScreen(results[resultVariant]);
-});
+  answerButton.addEventListener(`click`, () => {
+    const formInputsChecked = formNode.querySelectorAll(`input[type=checkbox]:checked`);
+    formInputsChecked.checked = false;
+    const results = [moduleResultVictory(), moduleResultTime(), moduleResultAttempts()];
+    let resultVariant = Math.floor(Math.random() * results.length);
+    showScreen(results[resultVariant]);
+  });
+  return templateGenre;
+};
