@@ -30,34 +30,8 @@ export const scoringPlayers = (playersScores, playerScore) => {
   return `Вы заняли ${place} место из ${quantity} игроков. Это лучше, чем у ${percent}% игроков`;
 };
 
-
-// Перепишу
-// export const chooseWordsEndings = (number, word) => {
-//   let newWord = ``;
-//   let ending = ``;
-//   if (number === 1) {
-//     ending = `у`;
-//   }
-//   if (word === `минута` || word === `секунда`) {
-//     if (number >= 2 && number <= 4) {
-//       ending = `ы`;
-//     } else if ([0, 1, 2, 3, 4].includes(number % 5) && number > 4) {
-//       ending = ``;
-//     }
-//     newWord = word.replace(/.$/, ending);
-//     return `Вы прошли за ${number} ${newWord}`;
-//   }
-//   if (word === `ошибка`) {
-//     if (number >= 2 && number <= 4) {
-//       ending = `и`;
-//     } else if ([0, 1, 2, 3, 4].includes(number % 5) && number > 4) {
-//       ending = `ок`;
-//       newWord = word.replace(/.{2}$/, ending);
-//       return `Вы допустили ${number} ${newWord}`;
-//     }
-//     newWord = word.replace(/.$/, ending);
-//     return `Вы допустили ${number} ${newWord}`;
-//   }
-//   return `${number} ${newWord}`;
-// };
+export const chooseWordsEndings = (number, words) => {
+  const cases = [2, 0, 1, 1, 1, 2];
+  return `${number} ${words[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]]}`;
+};
 

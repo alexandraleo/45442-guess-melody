@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {scoringGame, scoringPlayers} from './game-results.js';
+import {scoringGame, scoringPlayers, chooseWordsEndings} from './game-results.js';
 
 describe(`Проверка результатов`, () => {
   describe(`Проверка массива ответов игрока`, () => {
@@ -64,30 +64,37 @@ describe(`Проверка результатов`, () => {
       assert.equal(`Вы заняли 6 место из 6 игроков. Это лучше, чем у 0% игроков`, scoringPlayers(testPlayers, testPlayerResult));
     });
   });
-  // describe(`Проверка окончаний`, () => {
-  //   it(`С числом 1 ошибка`, () => {
-  //     assert.equal(`Вы допустили 1 ошибку`, chooseWordsEndings(1, `ошибка`));
-  //   });
-  //   it(`С числом 1 минута`, () => {
-  //     assert.equal(`Вы прошли за 1 минуту`, chooseWordsEndings(1, `минута`));
-  //   });
-  //   it(`С числом 2 минута`, () => {
-  //     assert.equal(`Вы прошли за 2 минуты`, chooseWordsEndings(2, `минута`));
-  //   });
-  //   it(`С числом 2 ошибка`, () => {
-  //     assert.equal(`Вы допустили 2 ошибки`, chooseWordsEndings(2, `ошибка`));
-  //   });
-  //   it(`С числом 20 секунда`, () => {
-  //     assert.equal(`Вы прошли за 20 секунд`, chooseWordsEndings(20, `секунда`));
-  //   });
-  //   it(`С числом 20 ошибка`, () => {
-  //     assert.equal(`Вы допустили 20 ошибок`, chooseWordsEndings(20, `ошибка`));
-  //   });
-  //   it(`С числом 22 секунда`, () => {
-  //     assert.equal(`Вы прошли за 22 секунды`, chooseWordsEndings(22, `секунда`));
-  //   });
-  //   it(`С числом 22 ошибка`, () => {
-  //     assert.equal(`Вы допустили 22 ошибки`, chooseWordsEndings(22, `ошибка`));
-  //   });
-  // });
+  describe(`Проверка окончаний`, () => {
+    it(`С числом 1 ошибка`, () => {
+      assert.equal(`1 ошибку`, chooseWordsEndings(1, [`ошибку`, `ошибки`, `ошибок`]));
+    });
+    it(`С числом 11 минута`, () => {
+      assert.equal(`11 минут`, chooseWordsEndings(11, [`минуту`, `минуты`, `минут`]));
+    });
+    it(`С числом 2 минута`, () => {
+      assert.equal(`2 минуты`, chooseWordsEndings(2, [`минуту`, `минуты`, `минут`]));
+    });
+    it(`С числом 2 ошибка`, () => {
+      assert.equal(`2 ошибки`, chooseWordsEndings(2, [`ошибку`, `ошибки`, `ошибок`]));
+    });
+    it(`С числом 20 секунда`, () => {
+      assert.equal(`20 секунд`, chooseWordsEndings(20, [`секунду`, `секунды`, `секунд`]));
+    });
+    it(`С числом 105 ошибка`, () => {
+      assert.equal(`105 ошибок`, chooseWordsEndings(105, [`ошибку`, `ошибки`, `ошибок`]));
+    });
+    it(`С числом 22 секунда`, () => {
+      assert.equal(`22 секунды`, chooseWordsEndings(22, [`секунду`, `секунды`, `секунд`]));
+    });
+    it(`С числом 22 год`, () => {
+      assert.equal(`22 года`, chooseWordsEndings(22, [`год`, `года`, `лет`]));
+    });
+    it(`С числом 21 год`, () => {
+      assert.equal(`21 год`, chooseWordsEndings(21, [`год`, `года`, `лет`]));
+    });
+    it(`С числом 105 год`, () => {
+      assert.equal(`105 лет`, chooseWordsEndings(105, [`год`, `года`, `лет`]));
+    });
+  });
 });
+
