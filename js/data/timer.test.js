@@ -12,9 +12,9 @@ describe(`Проверка таймера`, () => {
     assert.throws(() => setTimer([]), `Некорректно задано время`);
   });
   it(`Проверка уменьшения времени`, () => {
-    assert.equal(14, setTimer(15).tick());
+    assert.equal(14, setTimer(15));
   });
   it(`Проверка уменьшения времени до 0`, () => {
-    assert.equal(0, setTimer(1).tick());
+    assert.equal(0, setTimer(1));
   });
 });
