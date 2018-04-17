@@ -1,10 +1,9 @@
-const reduceScore = (initial, points, i, array) => {
-  if (array[i].right) {
-    points = array[i].time < 30 ? 2 : 1;
+const reduceScore = (initial, current) => {
+  if (current.right) {
+    return initial + (current.time < 30 ? 2 : 1);
   } else {
-    points = -2;
+    return initial - 2;
   }
-  return initial + points;
 };
 
 export const scoringGame = (answers, attemptsLeft) => {
@@ -21,7 +20,7 @@ export const scoringPlayers = (playersScores, playerScore) => {
     return `Время вышло! Вы не успели отгадать все мелодии`;
   }
 
-  const newScores = playersScores.slice();
+  const newScores = [...playersScores];
   newScores.push(playerScore.totalScore);
   newScores.sort((a, b) => b - a);
   const place = newScores.indexOf(playerScore.totalScore) + 1;
