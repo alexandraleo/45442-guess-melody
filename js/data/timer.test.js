@@ -25,11 +25,11 @@ describe(`Проверка таймера`, () => {
   });
 
   const timerCheck = (time, ticks) => {
-    for (let i = 1; i < ticks; i++) {
-      setTimer(time).tick();
-      time = setTimer(time).tick().timeLeft;
+    const timer = setTimer(time);
+    for (let i = 0; i < ticks; i++) {
+      timer.tick();
     }
-    return setTimer(time).tick().timeLeft;
+    return timer.timeLeft;
   };
 
   it(`Проверка тиканья в цикле`, () => {
@@ -37,5 +37,8 @@ describe(`Проверка таймера`, () => {
   });
   it(`Проверка тиканья в цикле`, () => {
     assert.equal(12, timerCheck(17, 5));
+  });
+  it(`Проверка слишком много тиков`, () => {
+    assert.equal(0, timerCheck(10, 15));
   });
 });
