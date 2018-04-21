@@ -1,18 +1,49 @@
-import {getElement, showScreen} from './show-screen.js';
+import {getElement} from './show-screen.js';
 import {templateHeader} from './header.js';
-import {moduleGenre} from './template-genre.js';
-import {questions, getArtistQuestions} from './data/questions.js';
+import {play, answers, changeStateAttempt} from './data/game.js';
+import {questions, getRandomQuestions, getRandomArtist} from './data/questions.js';
 
-const chosenQuestions = getArtistQuestions(questions);
+export const moduleArtists = function () {
+  const cloneArtists = templateArtists.cloneNode(true);
+  const answersNodes = cloneArtists.querySelectorAll(`.main-answer-wrapper`);
+
+  for (const answer of answersNodes) {
+    answer.addEventListener(`click`, (evt) => {
+      checkAnswers(evt, answersNodes);
+    });
+  }
+  return cloneArtists;
+};
+
+// const newGame = {
+//   chooseQuestions() {
+//     questionsObj.chosenQuestions = getRandomQuestions(questions, 3);
+//   },
+//   chooseArtist() {
+//     questionsObj.chosenArtist = getRandomArtist(questionsObj.chosenQuestions);
+//   }
+// };
+// const questionsObj = {};
+// console.log(questionsObj);
+// console.log(newGame.chooseQuestions());
+// console.log(newGame.chooseArtist());
+// console.log(newGame.chosenArtist);
+
+
+const chosenQuestions = getRandomArtist(getRandomQuestions(questions, 3));
+
 const chosenSong = chosenQuestions.findIndex((question) => {
   return question.song === true;
 });
+// console.log(`'chosenSong: '`, chosenSong);
+
 const songTemplate = () => {
   let artists = [];
   for (let i = 0; i < 3; i++) {
+    const index = i + 1;
     let artist = `<div class="main-answer-wrapper">
-        <input class="main-answer-r" type="radio" id="answer-${i + 1}" name="answer" value="val-${i + 1}"/>
-        <label class="main-answer" for="answer-${i + 1}">
+        <input class="main-answer-r" type="radio" id="answer-${index}" name="answer" value="val-${index}"/>
+        <label class="main-answer" for="answer-${index}">
           <img class="main-answer-preview" src="${chosenQuestions[i].image}"
                alt="${chosenQuestions[i].artist}" width="134" height="134">
           ${chosenQuestions[i].artist}
@@ -41,11 +72,12 @@ const templateArtists = getElement(`<section class="main main--level main--level
   </div>
 </section>`);
 
-export const moduleArtists = function () {
-  const cloneArtists = templateArtists.cloneNode(true);
-  const answersNodes = cloneArtists.querySelectorAll(`.main-wrap`);
-  for (const answer of answersNodes) {
-    answer.addEventListener(`click`, () => showScreen(moduleGenre()));
+const checkAnswers = (evt, array) => {
+  if (evt.currentTarget === array[chosenSong]) {
+    answers.push({right: true, time: 35});
+  } else {
+    answers.push({right: false, time: 35});
+    changeStateAttempt();
   }
-  return cloneArtists;
+  play();
 };

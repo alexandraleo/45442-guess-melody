@@ -52,11 +52,14 @@ export const questions = [
   }
 ];
 
-export const getArtistQuestions = (variants) => {
+export const getRandomQuestions = (variants, quantity) => {
   const questionsArray = [...variants];
   questionsArray.sort(getRandomArrayOrder);
-  const chosenQuestions = questionsArray.slice(0, 3);
-  const randomQuestion = questionsArray[getRandomElement(0, chosenQuestions.length)];
+  const chosenQuestions = questionsArray.slice(0, quantity);
+  return chosenQuestions;
+};
+export const getRandomArtist = (chosenQuestions) => {
+  const randomQuestion = chosenQuestions[getRandomElement(0, chosenQuestions.length)];
   for (let question of chosenQuestions) {
     if (question === randomQuestion) {
       question.song = true;
@@ -66,3 +69,17 @@ export const getArtistQuestions = (variants) => {
   }
   return chosenQuestions;
 };
+
+export const getRandomGenre = (chosenGenreQuestions) => {
+  const randomGenre = chosenGenreQuestions[getRandomElement(0, chosenGenreQuestions.length)].genre;
+  return randomGenre;
+};
+
+export const genreNames = new Map([
+  [`Country`, `кантри`],
+  [`Electronic`, `электроник`],
+  [`Pop`, `поп`],
+  [`R&B`, `ритм-н-блюз`],
+  [`Rock`, `рок`],
+  [`Jazz`, `джаз`]
+]);

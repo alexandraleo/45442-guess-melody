@@ -10,3 +10,4 @@ export const showScreen = (module) => {
   mainSectionNode.innerHTML = ``;
   mainSectionNode.appendChild(module);
 };
+

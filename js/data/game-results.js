@@ -13,6 +13,29 @@ export const scoringGame = (answers, attemptsLeft) => {
   return answers.reduce(reduceScore, 0);
 };
 
+export const results = {
+  victory: {
+    header: `Вы настоящий меломан!`,
+    stat: `За&nbsp;3&nbsp;минуты и 25&nbsp;секунд <br>вы&nbsp;набрали 12 баллов (8 быстрых)
+<br>совершив 3 ошибки`,
+    place: `<span class="main-comparison">Вы заняли 2 место из 10.
+Это&nbsp;лучше чем у&nbsp;80%&nbsp;игроков</span>`,
+    button: `Сыграть ещё раз`
+  },
+  time: {
+    header: `Увы и ах!`,
+    stat: `Время вышло!<br>Вы не успели отгадать все мелодии`,
+    place: ``,
+    button: `Попробовать ещё раз`
+  },
+  attempts: {
+    header: `Какая жалость!`,
+    stat: `У вас закончились все попытки.<br>Ничего, повезёт в следующий раз!`,
+    place: ``,
+    button: `Попробовать ещё раз`
+  }
+};
+
 export const scoringPlayers = (playersScores, playerScore) => {
   if (playerScore.attemptsLeft < 1) {
     return `У вас закончились все попытки. Ничего, повезёт в следующий раз!`;
