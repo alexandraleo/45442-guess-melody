@@ -1,18 +1,17 @@
-import {game} from './data/state.js';
-export const templateHeader = `<svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
+export const templateHeader = (gameState) => `<svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
   <circle
     cx="390" cy="390" r="370"
     class="timer-line"
     style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
 
   <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
-    <span class="timer-value-mins">${game.minutes}</span><!--
+    <span class="timer-value-mins">${gameState.minutes}</span><!--
       --><span class="timer-value-dots">:</span><!--
-      --><span class="timer-value-secs">${game.seconds}</span>
+      --><span class="timer-value-secs">${gameState.seconds}</span>
   </div>
 </svg>
 <div class= "main-mistakes" >
-  ${new Array(3 - game.attemptsLeft)
+  ${new Array(3 - gameState.attemptsLeft)
       .fill(`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`)
       .join(``)}
 </div>`;

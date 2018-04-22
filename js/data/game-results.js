@@ -12,7 +12,6 @@ export const scoringGame = (answers, attemptsLeft) => {
   }
   return answers.reduce(reduceScore, 0);
 };
-
 export const results = {
   victory: {
     header: `Вы настоящий меломан!`,

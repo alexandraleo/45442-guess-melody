@@ -1,5 +1,5 @@
+import {play, updateState} from './data/game.js';
 import {getElement} from './show-screen.js';
-import {play} from './data/game.js';
 
 const templateWelcome = getElement(`<section class="main main--welcome">
   <section class="logo" title="Угадай мелодию"><h1>Угадай мелодию</h1></section>
@@ -11,9 +11,13 @@ const templateWelcome = getElement(`<section class="main main--welcome">
     Удачи!
   </p>
 </section>`);
+
 export const moduleWelcome = function () {
   const cloneWelcome = templateWelcome.cloneNode(true);
   const buttonPlay = cloneWelcome.querySelector(`.main-play`);
-  buttonPlay.addEventListener(`click`, () => play());
+  buttonPlay.addEventListener(`click`, () => {
+    play();
+    updateState();
+  });
   return cloneWelcome;
 };

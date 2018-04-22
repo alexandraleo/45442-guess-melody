@@ -1,14 +1,16 @@
-const initialState = Object.freeze({
+export const initialState = Object.freeze({
   attemptsLeft: 3,
   minutes: `05`,
   seconds: `00`
 });
-// console.log(`'initialState: '`, initialState);
 
-export let game;
-const startState = () => {
-  game = Object.assign({}, initialState);
+export const canPlay = (game) => game.attemptsLeft - 1 > 0;
+export const changeStateAttempt = (game) => {
+  if (!canPlay(game)) {
+    throw new Error(`Попытки закончились`);
+  }
+  game.attemptsLeft -= 1;
+  return game;
 };
-startState();
-// console.log(game);
+
 

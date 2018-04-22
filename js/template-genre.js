@@ -1,8 +1,9 @@
 import {getElement} from './show-screen.js';
-import {templateHeader} from './header.js';
-import {play, answers, changeStateAttempt} from './data/game.js';
+import {play, answers} from './data/game.js';
+import {game} from './main.js';
+// import {templateHeader} from './header.js';
+import {changeStateAttempt} from './data/state.js';
 import {questions, getRandomQuestions, getRandomGenre, genreNames} from './data/questions.js';
-// import {moduleResultVictory, moduleResultTime, moduleResultAttempts} from './template-result.js';
 
 export const moduleGenre = function () {
   const cloneGenre = templateGenre.cloneNode(true);
@@ -22,30 +23,11 @@ export const moduleGenre = function () {
     const formInputsChecked = formNode.querySelectorAll(`input[type=checkbox]:checked`);
     checkGenreAnswers();
     formInputsChecked.checked = false;
-    // const results = [moduleResultVictory(), moduleResultTime(), moduleResultAttempts()];
-    // let resultVariant = Math.floor(Math.random() * results.length);
     play();
   });
   return cloneGenre;
 };
-const checkGenreAnswers = () => {
-  const formInputs = document.querySelectorAll(`input[type=checkbox]`);
-  const checkedInputs = [];
-  for (let input of formInputs) {
-    let array = Array.from(formInputs);
-    if (input.checked) {
-      checkedInputs.push(array.indexOf(input));
-    }
-  }
-  let difference = checkedInputs.filter((x) => rightAnswers.indexOf(x) === -1).concat(rightAnswers.filter((x) => checkedInputs.indexOf(x) === -1));
 
-  if (difference.length === 0) {
-    answers.push({right: true, time: 35});
-  } else {
-    answers.push({right: false, time: 35});
-    changeStateAttempt();
-  }
-};
 const chosenGenreQuestions = getRandomQuestions(questions, 4);
 const chosenGenre = getRandomGenre(chosenGenreQuestions);
 const genreName = genreNames.get(chosenGenre);
@@ -55,7 +37,8 @@ chosenGenreQuestions.forEach((answer) => {
     rightAnswers.push(chosenGenreQuestions.indexOf(answer));
   }
 });
-// console.log(`Правильные ответы`, rightAnswers);
+
+console.log(`Правильные ответы`, rightAnswers);
 
 const genreSongTemplate = () => {
   const genres = [];
@@ -78,9 +61,10 @@ const genreSongTemplate = () => {
   }
   return genres.join(``);
 };
+
 const templateGenre = getElement(`<section class="main main--level main--level-genre">
-  ${templateHeader}
-  <div class="main-wrap">
+
+<div class="main-wrap">
     <h2 class="title">Выберите ${genreName} треки</h2>
     <form class="genre">
       ${genreSongTemplate()}
@@ -88,3 +72,23 @@ const templateGenre = getElement(`<section class="main main--level main--level-g
     </form>
   </div>
 </section>`);
+
+const checkGenreAnswers = () => {
+  const formInputs = document.querySelectorAll(`input[type=checkbox]`);
+  const checkedInputs = [];
+  for (let input of formInputs) {
+    let array = Array.from(formInputs);
+    if (input.checked) {
+      checkedInputs.push(array.indexOf(input));
+    }
+  }
+  let difference = checkedInputs.filter((x) => rightAnswers.indexOf(x) === -1).concat(rightAnswers.filter((x) => checkedInputs.indexOf(x) === -1));
+
+  if (difference.length === 0) {
+    answers.push({ right: true, time: 35 });
+  } else {
+    answers.push({ right: false, time: 35 });
+    changeStateAttempt(game);
+  }
+  play();
+};

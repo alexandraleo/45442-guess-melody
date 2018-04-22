@@ -1,7 +1,9 @@
 import {getElement} from './show-screen.js';
-import {templateHeader} from './header.js';
-import {play, answers, changeStateAttempt} from './data/game.js';
+import {play, answers, updateState} from './data/game.js';
+import {game} from './main.js';
+import {changeStateAttempt} from './data/state.js';
 import {questions, getRandomQuestions, getRandomArtist} from './data/questions.js';
+import {templateHeader} from './header.js';
 
 export const moduleArtists = function () {
   const cloneArtists = templateArtists.cloneNode(true);
@@ -17,17 +19,12 @@ export const moduleArtists = function () {
 
 // const newGame = {
 //   chooseQuestions() {
-//     questionsObj.chosenQuestions = getRandomQuestions(questions, 3);
+//     this.chosenQuestions = getRandomQuestions(questions, 3);
 //   },
 //   chooseArtist() {
-//     questionsObj.chosenArtist = getRandomArtist(questionsObj.chosenQuestions);
+//     this.chosenArtist = getRandomArtist(this.chosenQuestions);
 //   }
 // };
-// const questionsObj = {};
-// console.log(questionsObj);
-// console.log(newGame.chooseQuestions());
-// console.log(newGame.chooseArtist());
-// console.log(newGame.chosenArtist);
 
 
 const chosenQuestions = getRandomArtist(getRandomQuestions(questions, 3));
@@ -35,7 +32,7 @@ const chosenQuestions = getRandomArtist(getRandomQuestions(questions, 3));
 const chosenSong = chosenQuestions.findIndex((question) => {
   return question.song === true;
 });
-// console.log(`'chosenSong: '`, chosenSong);
+console.log(`'chosenSong: '`, chosenSong);
 
 const songTemplate = () => {
   let artists = [];
@@ -53,9 +50,10 @@ const songTemplate = () => {
   }
   return artists.join(``);
 };
+
 const templateArtists = getElement(`<section class="main main--level main--level-artist">
-  ${templateHeader}
-  <div class="main-wrap">
+${templateHeader}
+<div class="main-wrap">
     <h2 class="title main-title">Кто исполняет эту песню?</h2>
     <div class="player-wrapper">
       <div class="player">
@@ -77,7 +75,8 @@ const checkAnswers = (evt, array) => {
     answers.push({right: true, time: 35});
   } else {
     answers.push({right: false, time: 35});
-    changeStateAttempt();
+    changeStateAttempt(game);
   }
   play();
+  updateState();
 };

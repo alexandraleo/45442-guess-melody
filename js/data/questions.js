@@ -58,6 +58,7 @@ export const getRandomQuestions = (variants, quantity) => {
   const chosenQuestions = questionsArray.slice(0, quantity);
   return chosenQuestions;
 };
+
 export const getRandomArtist = (chosenQuestions) => {
   const randomQuestion = chosenQuestions[getRandomElement(0, chosenQuestions.length)];
   for (let question of chosenQuestions) {
