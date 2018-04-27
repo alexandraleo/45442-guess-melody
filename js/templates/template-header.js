@@ -1,4 +1,5 @@
-export const templateHeader = (gameState) => `<svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
+export const templateHeader = (gameState) => {
+  return `<svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
   <circle
     cx="390" cy="390" r="370"
     class="timer-line"
@@ -15,4 +16,5 @@ export const templateHeader = (gameState) => `<svg xmlns="http://www.w3.org/2000
       .fill(`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`)
       .join(``)}
 </div>`;
+};
 
