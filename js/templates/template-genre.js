@@ -1,5 +1,5 @@
 import {getElement} from '../show-screen.js';
-import {chooseGame, game} from '../data/game.js';
+import {chooseGame, game, getAnswers} from '../data/game.js';
 import {changeStateAttempt} from '../data/state.js';
 
 export const moduleGenre = (question) => {
@@ -73,13 +73,12 @@ const checkGenreAnswers = (question) => {
     }
   }
   let difference = checkedInputs.filter((x) => right.indexOf(x) === -1).concat(right.filter((x) => checkedInputs.indexOf(x) === -1));
-
-  if (difference.length === 0) {
-    game.answers.push({right: true, time: 35});
-  } else {
-    game.answers.push({right: false, time: 35});
+  let accuracy = true;
+  if (difference.length !== 0) {
+    accuracy = false;
     changeStateAttempt(game);
   }
+  getAnswers(accuracy);
   return game;
 };
 

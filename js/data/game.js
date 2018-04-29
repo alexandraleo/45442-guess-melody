@@ -69,4 +69,7 @@ export const chooseGame = () => {
   }
 };
 
+export const getAnswers = (accuracy, timer = 35) => {
+  game.answers.push({right: accuracy, time: timer});
+};
 

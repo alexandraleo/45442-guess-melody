@@ -1,5 +1,5 @@
 import {getElement} from '../show-screen.js';
-import {chooseGame, game} from '../data/game.js';
+import {chooseGame, game, getAnswers} from '../data/game.js';
 import {changeStateAttempt} from '../data/state.js';
 
 export const moduleArtists = function (question) {
@@ -51,11 +51,11 @@ const checkAnswers = (evt, question) => {
     return answer.isCorrect;
   });
   const currentIndex = +evt.target.value;
-  if (currentIndex === right) {
-    game.answers.push({right: true, time: 35});
-  } else {
-    game.answers.push({right: false, time: 35});
+  let accuracy = true;
+  if (currentIndex !== right) {
+    accuracy = false;
     changeStateAttempt(game);
   }
+  getAnswers(accuracy);
   return game;
 };
