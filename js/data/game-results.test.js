@@ -48,15 +48,15 @@ describe(`Проверка результатов`, () => {
       assert.equal(`Время вышло! Вы не успели отгадать все мелодии`, scoringPlayers(testPlayers, testTime));
     });
     it(`Результат игрока`, () => {
-      const testPlayerResult = {totalScore: 10, attemptsLeft: 2, timeLeft: 20};
+      const testPlayerResult = 10;
       assert.equal(`Вы заняли 4 место из 6 игроков. Это лучше, чем у 33% игроков`, scoringPlayers(testPlayers, testPlayerResult));
     });
     it(`Результат игрока`, () => {
-      const testPlayerResult = {totalScore: 70, attemptsLeft: 2, timeLeft: 20};
+      const testPlayerResult = 70;
       assert.equal(`Вы заняли 1 место из 6 игроков. Это лучше, чем у 83% игроков`, scoringPlayers(testPlayers, testPlayerResult));
     });
     it(`Результат игрока - повторяющееся значение`, () => {
-      const testPlayerResult = {totalScore: 11, attemptsLeft: 2, timeLeft: 20};
+      const testPlayerResult = 11;
       assert.equal(`Вы заняли 3 место из 6 игроков. Это лучше, чем у 50% игроков`, scoringPlayers(testPlayers, testPlayerResult));
     });
     it(`Результат игрока - последнее место`, () => {

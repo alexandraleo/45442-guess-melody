@@ -6,7 +6,10 @@ export const getElement = (templateHTML) => {
 
 const mainSectionNode = document.querySelector(`section.main`);
 
-export const showScreen = (module) => {
+export const showScreen = (...modules) => {
   mainSectionNode.innerHTML = ``;
-  mainSectionNode.appendChild(module);
+  for (let module of modules) {
+    mainSectionNode.appendChild(module);
+  }
 };
+
