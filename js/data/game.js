@@ -57,7 +57,6 @@ export const gameOver = () => {
 };
 
 export const chooseGame = () => {
-  console.log(game.answers);
   const question = questions[game.answers.length];
   if (canPlay(game)) {
     if (question.type === `genre`) {
