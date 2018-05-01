@@ -23,6 +23,5 @@ export default class AbstractView {
     return getElement(this.template);
   }
   bind() {
-    //
   }
 }
