@@ -1,4 +1,8 @@
-import {getElement} from './show-screen.js';
+const getElement = (templateHTML) => {
+  const newScreen = document.createElement(`template`);
+  newScreen.innerHTML = templateHTML;
+  return newScreen.content;
+};
 
 export default class AbstractView {
   constructor() {

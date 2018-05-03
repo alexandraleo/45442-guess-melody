@@ -1,11 +1,11 @@
 import WelcomeView from '../game/welcome-view.js';
-import {chooseGame} from '../data/game.js';
+import Application from '../application.js';
 
 export const moduleWelcome = () => {
   const welcome = new WelcomeView();
 
   welcome.onPlayClick = () => {
-    chooseGame();
+    Application.playGame();
   };
   return welcome.element;
 };

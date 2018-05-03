@@ -1,4 +1,3 @@
-import {showScreen} from './show-screen.js';
-import {moduleWelcome} from './templates/template-welcome.js';
+import Application from './application.js';
 
-showScreen(moduleWelcome());
+Application.showWelcome();
