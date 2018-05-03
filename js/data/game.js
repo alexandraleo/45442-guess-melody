@@ -2,9 +2,10 @@ import {moduleGenre} from '../templates/template-genre.js';
 import {moduleArtists} from '../templates/template-artists.js';
 import {initialState, canPlay} from './state.js';
 import {moduleResult} from '../templates/template-result.js';
-import {templateHeader} from '../templates/template-header.js';
-import {getElement, showScreen} from '../show-screen.js';
+import {moduleHeader} from '../templates/template-header.js';
+import {showScreen} from '../show-screen.js';
 import {questions} from './questions.js';
+import {changeStateAttempt} from './state.js';
 import {scoringGame, chooseWordsEndings, scoringPlayers, scoringFast} from './game-results.js';
 
 export let game;
@@ -58,11 +59,10 @@ export const gameOver = () => {
 export const chooseGame = () => {
   const question = questions[game.answers.length];
   if (canPlay(game)) {
-    const moduleHeader = getElement(templateHeader(game));
     if (question.type === `genre`) {
-      showScreen(moduleHeader, moduleGenre(question));
+      showScreen(moduleHeader(game), moduleGenre(question));
     } else if (question.type === `artist`) {
-      showScreen(moduleHeader, moduleArtists(question));
+      showScreen(moduleHeader(game), moduleArtists(question));
     }
   } else {
     gameOver();
@@ -73,3 +73,41 @@ export const getAnswers = (accuracy, timer = 35) => {
   game.answers.push({right: accuracy, time: timer});
 };
 
+export const checkArtistsAnswers = (evt, question) => {
+  const right = question.answers.findIndex((answer) => {
+    return answer.isCorrect;
+  });
+  const currentIndex = +evt.target.value;
+  let accuracy = true;
+  if (currentIndex !== right) {
+    accuracy = false;
+    changeStateAttempt(game);
+  }
+  getAnswers(accuracy);
+  return game;
+};
+
+export const checkGenreAnswers = (question) => {
+  const formInputs = document.querySelectorAll(`input[type=checkbox]`);
+  const checkedInputs = [];
+  for (let input of formInputs) {
+    let array = Array.from(formInputs);
+    if (input.checked) {
+      checkedInputs.push(array.indexOf(input));
+    }
+  }
+  let right = [];
+  for (let answer of question.answers) {
+    if (question.genre === answer.genre) {
+      right.push(question.answers.indexOf(answer));
+    }
+  }
+  let difference = checkedInputs.filter((x) => right.indexOf(x) === -1).concat(right.filter((x) => checkedInputs.indexOf(x) === -1));
+  let accuracy = true;
+  if (difference.length !== 0) {
+    accuracy = false;
+    changeStateAttempt(game);
+  }
+  getAnswers(accuracy);
+  return game;
+};

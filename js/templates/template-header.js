@@ -1,20 +1,8 @@
-export const templateHeader = (gameState) => {
-  return `<svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
-  <circle
-    cx="390" cy="390" r="370"
-    class="timer-line"
-    style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"></circle>
+import HeaderView from '../game/header-view.js';
 
-  <div class="timer-value" xmlns="http://www.w3.org/1999/xhtml">
-    <span class="timer-value-mins">${gameState.minutes}</span><!--
-      --><span class="timer-value-dots">:</span><!--
-      --><span class="timer-value-secs">${gameState.seconds}</span>
-  </div>
-</svg>
-<div class= "main-mistakes" >
-  ${new Array(3 - gameState.attemptsLeft)
-      .fill(`<img class="main-mistake" src="img/wrong-answer.png" width="35" height="49">`)
-      .join(``)}
-</div>`;
+export const moduleHeader = (game, timeRatio = 0.8) => {
+  const header = new HeaderView(game);
+  header.onTimerTick(timeRatio);
+  return header.element;
 };
 
