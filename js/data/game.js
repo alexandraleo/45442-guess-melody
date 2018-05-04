@@ -6,12 +6,7 @@
 // import {questions} from './questions.js';
 // import {scoringGame, chooseWordsEndings, scoringPlayers, scoringFast} from './game-results.js';
 
-export const initialState = Object.freeze({
-  attemptsLeft: 3,
-  minutes: `05`,
-  seconds: `00`,
-  answers: []
-});
+
 
 // export let game;
 // export const startState = () => {

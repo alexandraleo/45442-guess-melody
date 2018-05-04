@@ -1,24 +1,29 @@
 // import {moduleWelcome} from '../templates/template-welcome.js';
-import {moduleHeader} from '../templates/template-header.js';
+// import {moduleHeader} from '../templates/template-header.js';
 import {moduleArtists} from '../templates/template-artists.js';
 import {moduleGenre} from '../templates/template-genre.js';
-import {setTimer} from '../data/timer.js';
+import {setTimer, onTimerTick} from '../data/timer.js';
 import {questions} from '../data/questions.js';
 import {moduleResult} from '../templates/template-result.js';
+import HeaderView from './header-view.js';
 // import Application from '../application.js';
 
 export default class GameScreen {
   constructor(gameModel) {
     this.gameModel = gameModel;
-    this.header = moduleHeader(this.gameModel.game);
+    this.header = new HeaderView(this.gameModel.game).element;
     // this.artists = moduleArtists(this.gameModel.game);
     // this.genre = moduleGenre(this.gameModel.game);
 
-    this.root = document.createElement(`template`);
+    this.root = document.createElement(`section`);
+    this.root.classList.add(`main`);
     this.root.appendChild(this.header);
-    console.log(this.root.appendChild(this.header));
+    console.log(this.header);
     this.root.appendChild(this.chooseGame());
+    console.log(this.element.childNodes);
+
     this.timer = setTimer(this.gameModel.game.timeLeft);
+    // this.timeLine = onTimerTick(this.gameModel.getTimeRatio());
     this.interval = null;
   }
 
@@ -27,8 +32,9 @@ export default class GameScreen {
   }
 
   updateHeader() {
-    const header = moduleHeader(this.gameModel.game);
-    this.header = header;
+    const newHeader = new HeaderView(this.gameModel.game).element;
+    this.root.replaceChild(newHeader, this.header);
+    this.header = newHeader;
   }
 
   stopGame() {
@@ -36,11 +42,15 @@ export default class GameScreen {
   }
 
   startGame() {
-    // this.interval = setInterval(() => {
-    //   this.model.tick();
-    //   this.timer.tick();
-    //   this.updateHeader();
-    // }, 1000);
+    this.interval = setInterval(() => {
+      this.gameModel.tick();
+      this.timer.tick();
+      // this.timeLine();
+      this.gameModel.getTimeRatio();
+      // console.log(`this.gameModel.getTimeRatio();: `, this.gameModel.getTimeRatio());
+      // console.log(this.gameModel.game.minutes, this.gameModel.game.seconds);
+      // this.updateHeader();
+    }, 1000);
   }
 
   chooseGame() {
@@ -48,9 +58,9 @@ export default class GameScreen {
     let view;
     if (this.gameModel.canPlay(this.gameModel.game)) {
       if (question.type === `genre`) {
-        view = moduleGenre(question);
+        view = moduleGenre(question, this.gameModel, this.chooseGame);
       } else if (question.type === `artist`) {
-        view = moduleArtists(question);
+        view = moduleArtists(question, this.gameModel, this.chooseGame);
       }
     } else {
       view = moduleResult();

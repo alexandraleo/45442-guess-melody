@@ -12,3 +12,12 @@ export const setTimer = (workingTime) => {
     }
   };
 };
+
+export const onTimerTick = (timeRatio) => {
+  const timer = document.element.querySelector(`.timer-line`);
+  const radius = timer.getAttribute(`r`);
+  const dasharray = Math.round(2 * Math.PI * radius);
+  const dashoffset = timeRatio * dasharray;
+  timer.style.strokeDasharray = dasharray;
+  timer.style.strokeDashoffset = dashoffset;
+};

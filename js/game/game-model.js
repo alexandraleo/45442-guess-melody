@@ -1,6 +1,14 @@
-import {initialState} from '../data/game.js';
+// import {initialState} from '../data/game.js';
 import {questions} from '../data/questions.js';
 
+
+const initialState = Object.freeze({
+  attemptsLeft: 3,
+  minutes: `05`,
+  seconds: `00`,
+  totalSeconds: 300,
+  answers: []
+});
 
 export default class GameModel {
   constructor() {
@@ -14,7 +22,8 @@ export default class GameModel {
   startState() {
     this.game = Object.assign({}, initialState);
     this.game.answers = [];
-    this.game.timeLeft = +this.game.minutes * 60 + +this.game.seconds;
+    // this.game.seconds = +this.game.minutes * 60 + +this.game.seconds;
+    this.game.timeLeft = this.game.totalSeconds;
   }
 
   canPlay() {
@@ -27,6 +36,16 @@ export default class GameModel {
     }
     this.game.attemptsLeft -= 1;
     return this.game;
+  }
+
+  tick() {
+    this.game.timeLeft--;
+    this.game.minutes = `0${Math.floor(this.game.timeLeft / 60)}`;
+    this.game.seconds = `${this.game.timeLeft % 60}`;
+  }
+
+  getTimeRatio() {
+    return Math.round((1 - this.game.timeLeft / this.game.totalSeconds) * 1000) / 1000;
   }
 
   getQuestion() {

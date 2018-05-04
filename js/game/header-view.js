@@ -25,13 +25,4 @@ export default class HeaderView extends AbstractView {
       .join(``)}
 </div>`;
   }
-
-  onTimerTick(timeRatio) {
-    const timer = this.element.querySelector(`.timer-line`);
-    const radius = timer.getAttribute(`r`);
-    const dasharray = Math.round(2 * Math.PI * radius);
-    const dashoffset = timeRatio * dasharray;
-    timer.style.strokeDasharray = dasharray;
-    timer.style.strokeDashoffset = dashoffset;
-  }
 }
