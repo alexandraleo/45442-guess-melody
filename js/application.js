@@ -1,25 +1,20 @@
-import {moduleWelcome} from './templates/template-welcome.js';
+import WelcomeView from './game/welcome-view.js';
 import GameModel from './game/game-model.js';
 import GameScreen from './game/game-screen.js';
-import {moduleResult} from './templates/template-result.js';
+import ResultsView from './game/results-view.js';
 
 const mainSectionNode = document.querySelector(`div.app`);
 
 export default class Application {
 
-  // static showScreen(...modules) {
-  //   mainSectionNode.innerHTML = ``;
-  //   for (let module of modules) {
-  //     mainSectionNode.appendChild(module);
-  //   }
-  // }
   static showScreen(module) {
     mainSectionNode.innerHTML = ``;
     mainSectionNode.appendChild(module);
   }
 
   static showWelcome() {
-    this.showScreen(moduleWelcome());
+    const welcome = new WelcomeView();
+    this.showScreen(welcome.element);
   }
 
   static playGame() {
@@ -30,6 +25,7 @@ export default class Application {
   }
 
   static showGameOver(result) {
-    this.showScreen(moduleResult(result));
+    const gameOver = new ResultsView(result);
+    this.showScreen(gameOver.element);
   }
 }

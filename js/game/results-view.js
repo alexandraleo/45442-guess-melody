@@ -1,4 +1,5 @@
 import AbstractView from '../abstract-view.js';
+import Application from '../application.js';
 
 export default class ResultsView extends AbstractView {
   constructor(result) {
@@ -23,7 +24,7 @@ export default class ResultsView extends AbstractView {
   bind() {
     const againButton = this.element.querySelector(`.main-replay`);
     againButton.addEventListener(`click`, () => {
-      this.onPlayClick();
+      Application.showWelcome();
     });
   }
 }

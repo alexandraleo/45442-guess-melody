@@ -7,8 +7,7 @@ export default class ArtistsView extends AbstractView {
   }
 
   get template() {
-    return `<section class="main main--level main--level-artist">
-<div class="main-wrap">
+    return `<div class="main-wrap">
     <h2 class="title main-title">${this.question.question}</h2>
     <div class="player-wrapper">
       <div class="player">
@@ -31,8 +30,7 @@ export default class ArtistsView extends AbstractView {
       </div>`);
   }).join(``)}
     </form>
-  </div>
-  </section>`;
+  </div>`;
   }
 
   onPlayClick() {
@@ -42,6 +40,18 @@ export default class ArtistsView extends AbstractView {
     const formNode = this.element.querySelector(`.main-list`);
     formNode.addEventListener(`change`, (evt) => {
       this.onPlayClick(evt);
+    });
+
+    const playerControl = this.element.querySelector(`.player-control`);
+    playerControl.addEventListener(`click`, () => {
+      const audio = this.element.querySelector(`audio`);
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+      playerControl.classList.toggle(`player-control--play`);
+      playerControl.classList.toggle(`player-control--pause`);
     });
   }
 }

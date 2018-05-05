@@ -1,11 +1,8 @@
-// import {initialState} from '../data/game.js';
 import {questions} from '../data/questions.js';
 
 
 const initialState = Object.freeze({
   attemptsLeft: 3,
-  minutes: `05`,
-  seconds: `00`,
   totalSeconds: 300,
   answers: []
 });
@@ -22,16 +19,17 @@ export default class GameModel {
   startState() {
     this.game = Object.assign({}, initialState);
     this.game.answers = [];
-    // this.game.seconds = +this.game.minutes * 60 + +this.game.seconds;
     this.game.timeLeft = this.game.totalSeconds;
   }
 
-  canPlay() {
-    return this.game.attemptsLeft - 1 >= 0 && this.game.answers.length + 1 <= 10;
+  get canPlay() {
+    return this.game.attemptsLeft - 1 >= 0 &&
+     this.game.answers.length + 1 <= 10 &&
+      this.game.timeLeft > 0;
   }
 
   changeStateAttempt() {
-    if (!this.canPlay()) {
+    if (!this.canPlay) {
       throw new Error(`Попытки закончились`);
     }
     this.game.attemptsLeft -= 1;
@@ -40,12 +38,6 @@ export default class GameModel {
 
   tick() {
     this.game.timeLeft--;
-    this.game.minutes = `0${Math.floor(this.game.timeLeft / 60)}`;
-    this.game.seconds = `${this.game.timeLeft % 60}`;
-  }
-
-  getTimeRatio() {
-    return Math.round((1 - this.game.timeLeft / this.game.totalSeconds) * 1000) / 1000;
   }
 
   getQuestion() {
@@ -73,14 +65,14 @@ export default class GameModel {
   }
 
   scoringFast(answers) {
-    return answers.reduce(this.reduceTime(), 0);
+    return answers.reduce(this.reduceTime, 0);
   }
 
   scoringGame(answers, attemptsLeft) {
     if (answers.length < 10 || attemptsLeft < 1) {
       return -1;
     }
-    return answers.reduce(this.reduceScore(), 0);
+    return answers.reduce(this.reduceScore, 0);
   }
 
   scoringPlayers(playersScores, playerScore) {
@@ -104,7 +96,7 @@ export default class GameModel {
     return `${number} ${words[wordIndex]}`;
   }
 
-  checkArtistsAnswers(evt, question) {
+  checkArtistsAnswers(evt, question, timer) {
     const right = question.answers.findIndex((answer) => {
       return answer.isCorrect;
     });
@@ -114,11 +106,11 @@ export default class GameModel {
       accuracy = false;
       this.changeStateAttempt(this.game);
     }
-    this.getAnswers(accuracy);
+    this.getAnswers(accuracy, timer);
     return this.game;
   }
 
-  checkGenreAnswers(question) {
+  checkGenreAnswers(question, timer) {
     const formInputs = document.querySelectorAll(`input[type=checkbox]`);
     const checkedInputs = [];
     for (let input of formInputs) {
@@ -139,7 +131,48 @@ export default class GameModel {
       accuracy = false;
       this.changeStateAttempt(this.game);
     }
-    this.getAnswers(accuracy);
+    this.getAnswers(accuracy, timer);
     return this.game;
+  }
+
+  gameOver() {
+    let end = `attempts`;
+    if (this.game.timeLeft === 0) {
+      end = `time`;
+    } else if (this.game.answers.length === 10) {
+      end = `victory`;
+    }
+
+    const totalScore = this.scoringGame(this.game.answers, this.game.attemptsLeft);
+    const totalFast = this.scoringFast(this.game.answers);
+    const playersScores = [10, 15, 20, 3, 7];
+    const mistakes = 3 - this.game.attemptsLeft;
+    const wordMistake = this.chooseWordsEndings(mistakes, [`ошибку`, `ошибки`, `ошибок`]);
+    const wordMinutes = this.chooseWordsEndings(Math.floor(this.game.timeLeft / 60), [`минуту`, `минуты`, `минут`]);
+    const wordSeconds = this.chooseWordsEndings(this.game.timeLeft % 60, [`секунду`, `секунды`, `секунд`]);
+    const wordPoints = this.chooseWordsEndings(totalScore, [`балл`, `балла`, `баллов`]);
+    const wordFast = this.chooseWordsEndings(totalFast, [`быстрый`, `быстрых`, `быстрых`]);
+    const results = {
+      victory: {
+        header: `Вы настоящий меломан!`,
+        stat: `За&nbsp;${wordMinutes} и&nbsp;${wordSeconds} <br>вы&nbsp;набрали ${wordPoints} (${wordFast})
+  <br>совершив ${wordMistake}`,
+        place: `<span class="main-comparison">${this.scoringPlayers(playersScores, totalScore)}</span>`,
+        button: `Сыграть ещё раз`
+      },
+      time: {
+        header: `Увы и ах!`,
+        stat: `Время вышло!<br>Вы не успели отгадать все мелодии`,
+        place: ``,
+        button: `Попробовать ещё раз`
+      },
+      attempts: {
+        header: `Какая жалость!`,
+        stat: `У вас закончились все попытки.<br>Ничего, повезёт в следующий раз!`,
+        place: ``,
+        button: `Попробовать ещё раз`
+      }
+    };
+    return results[end];
   }
 }

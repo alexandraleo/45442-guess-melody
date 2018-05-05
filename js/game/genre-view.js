@@ -7,8 +7,7 @@ export default class GenreView extends AbstractView {
   }
 
   get template() {
-    return `<section class="main main--level main--level-genre">
-  <div class="main-wrap">
+    return `<div class="main-wrap">
     <h2 class="title">${this.question.question}</h2>
     <form class="genre">
       ${this.question.answers.map((it, i) => {
@@ -16,7 +15,7 @@ export default class GenreView extends AbstractView {
         <div class="player-wrapper">
           <div class="player">
             <audio src="${it.src}"></audio>
-            <button class="player-control player-control--pause"></button>
+            <button class="player-control player-control--play"></button>
             <div class="player-track">
               <span class="player-status"></span>
             </div>
@@ -28,8 +27,7 @@ export default class GenreView extends AbstractView {
   }).join(``)}
       <button class="genre-answer-send" type="submit" disabled>Ответить</button>
     </form>
-  </div>
-  </section>`;
+  </div>`;
   }
 
   onPlayClick() {
@@ -39,6 +37,7 @@ export default class GenreView extends AbstractView {
     const answerButton = this.element.querySelector(`.genre-answer-send`);
     const formNode = this.element.querySelector(`.genre`);
     const formInputs = this.element.querySelectorAll(`input[type=checkbox]`);
+    const audioNodes = this.element.querySelectorAll(`audio`);
 
     formNode.addEventListener(`change`, () => {
       const variants = Array.from(formInputs);
@@ -50,6 +49,25 @@ export default class GenreView extends AbstractView {
       formInputs.checked = false;
       this.onPlayClick();
     });
+
+    formNode.addEventListener(`click`, (evt) => {
+      const target = evt.target;
+      if (target.className.includes(`player-control`)) {
+        const audio = target.parentNode.querySelector(`audio`);
+        const control = target.parentNode.querySelector(`.player-control`);
+        const isPlaying = !audio.paused;
+
+        for (let track of audioNodes) {
+          track.pause();
+        }
+        if (isPlaying) {
+          audio.pause();
+        } else {
+          audio.play();
+        }
+        control.classList.toggle(`player-control--play`);
+        control.classList.toggle(`player-control--pause`);
+      }
+    });
   }
 }
-
