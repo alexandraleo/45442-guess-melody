@@ -1,4 +1,4 @@
-export const questions = [
+const questions = [
   {
     'type': `genre`,
     'question': `Выберите все песни в жанре R\'n\'B'`,

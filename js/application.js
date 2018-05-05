@@ -3,31 +3,31 @@ import GameModel from './game/game-model.js';
 import GameScreen from './game/game-screen.js';
 import ResultsView from './game/results-view.js';
 import Loader from './loader.js';
-import SplashScreen from './utils/splash.js';
+// import SplashScreen from './utils/splash.js';
 import ErrorView from './utils/error.js';
 
 const mainSectionNode = document.querySelector(`div.app`);
+let questions;
 
 export default class Application {
-
-  static start() {
-    const splash = new SplashScreen();
-    this.showScreen(splash.element);
-    splash.start();
-    Loader.loadQuestions().
-        then(Application.showWelcome).
-        catch(Application.showError).
-        then(() => splash.stop());
-  }
-
-  static showError(error) {
-    const errorView = new ErrorView(error);
-    this.showScreen(errorView);
-  }
 
   static showScreen(module) {
     mainSectionNode.innerHTML = ``;
     mainSectionNode.appendChild(module);
+  }
+
+  static start() {
+    // const start = Application.showWelcome();
+    // start.disableBtn();
+    Loader.loadQuestions().
+        then(Application.showWelcome()).
+        then(Application.readyToStart).
+        catch(Application.showError);
+  }
+
+  static showError(error) {
+    const errorModule = new ErrorView(error);
+    this.showScreen(errorModule.element);
   }
 
   static showWelcome() {
@@ -36,8 +36,8 @@ export default class Application {
   }
 
   static playGame() {
-    const gameModel = new GameModel();
-    const gameScreen = new GameScreen(gameModel);
+    const gameModel = new GameModel(questions);
+    const gameScreen = new GameScreen(gameModel, questions);
     this.showScreen(gameScreen.element);
     gameScreen.startGame();
   }
@@ -46,4 +46,9 @@ export default class Application {
     const gameOver = new ResultsView(result);
     this.showScreen(gameOver.element);
   }
+
+  static readyToStart(data) {
+    questions = data;
+  }
+
 }

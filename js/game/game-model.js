@@ -1,4 +1,4 @@
-import {questions} from '../data/questions.js';
+// import {questions} from '../data/questions.js';
 
 
 const initialState = Object.freeze({
@@ -8,7 +8,8 @@ const initialState = Object.freeze({
 });
 
 export default class GameModel {
-  constructor() {
+  constructor(questions) {
+    this.questions = questions;
     this.startState();
   }
 
@@ -41,7 +42,7 @@ export default class GameModel {
   }
 
   getQuestion() {
-    return questions[this.game.answers.length];
+    return this.questions[this.game.answers.length];
   }
 
   getAnswers(accuracy, timer = 35) {

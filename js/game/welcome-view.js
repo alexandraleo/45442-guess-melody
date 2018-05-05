@@ -19,6 +19,14 @@ export default class WelcomeView extends AbstractView {
 </section>`;
   }
 
+  disableBtn() {
+    this.element.querySelector(`.main-play`).disabled = true;
+  }
+
+  unableBtn() {
+    this.element.querySelector(`.main-play`).removeAttribute(`disabled`);
+  }
+
   onPlayClick() {
   }
 

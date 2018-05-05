@@ -11,7 +11,7 @@ export default class ArtistsView extends AbstractView {
     <h2 class="title main-title">${this.question.question}</h2>
     <div class="player-wrapper">
       <div class="player">
-        <audio src="${this.question.src}"></audio>
+        <audio src="${this.question.src}" autoplay></audio>
         <button class="player-control player-control--pause"></button>
         <div class="player-track">
           <span class="player-status"></span>
@@ -44,11 +44,11 @@ export default class ArtistsView extends AbstractView {
 
     const playerControl = this.element.querySelector(`.player-control`);
     playerControl.addEventListener(`click`, () => {
-      const audio = this.element.querySelector(`audio`);
-      if (audio.paused) {
-        audio.play();
+      const audioNode = this.element.querySelector(`audio`);
+      if (audioNode.paused) {
+        audioNode.play();
       } else {
-        audio.pause();
+        audioNode.pause();
       }
       playerControl.classList.toggle(`player-control--play`);
       playerControl.classList.toggle(`player-control--pause`);

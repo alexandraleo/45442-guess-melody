@@ -38,8 +38,10 @@ export default class GenreView extends AbstractView {
     const formNode = this.element.querySelector(`.genre`);
     const formInputs = this.element.querySelectorAll(`input[type=checkbox]`);
     const audioNodes = this.element.querySelectorAll(`audio`);
+    // const playerNodes = this.element.querySelectorAll(`.player`);
 
     formNode.addEventListener(`change`, () => {
+      // evt.preventDefault();
       const variants = Array.from(formInputs);
       answerButton.disabled = !variants.some((variant) => variant.checked);
     });
@@ -51,22 +53,22 @@ export default class GenreView extends AbstractView {
     });
 
     formNode.addEventListener(`click`, (evt) => {
+      // evt.preventDefault();
       const target = evt.target;
       if (target.className.includes(`player-control`)) {
-        const audio = target.parentNode.querySelector(`audio`);
-        const control = target.parentNode.querySelector(`.player-control`);
-        const isPlaying = !audio.paused;
+        const currentAudio = target.parentNode.querySelector(`audio`);
+        const isPlaying = !currentAudio.paused;
 
         for (let track of audioNodes) {
           track.pause();
         }
         if (isPlaying) {
-          audio.pause();
+          currentAudio.pause();
         } else {
-          audio.play();
+          currentAudio.play();
         }
-        control.classList.toggle(`player-control--play`);
-        control.classList.toggle(`player-control--pause`);
+        target.classList.toggle(`player-control--play`);
+        target.classList.toggle(`player-control--pause`);
       }
     });
   }

@@ -2,11 +2,12 @@ import GenreView from './genre-view.js';
 import ArtistsView from './artists-view.js';
 import HeaderView from './header-view.js';
 import {setTimer} from '../data/timer.js';
-import {questions} from '../data/questions.js';
+// import {questions} from '../data/questions.js';
 import Application from '../application.js';
 
 export default class GameScreen {
-  constructor(gameModel) {
+  constructor(gameModel, questions) {
+    this.questions = questions;
     this.gameModel = gameModel;
     this.header = new HeaderView(this.gameModel.game);
     this.newGame = this.chooseGame();
@@ -62,7 +63,7 @@ export default class GameScreen {
   }
 
   chooseGame() {
-    const question = questions[this.gameModel.game.answers.length];
+    const question = this.questions[this.gameModel.game.answers.length];
     this.gameModel.game.answerTime = this.gameModel.game.timeLeft;
     let view;
     let timer;
